@@ -1,11 +1,3 @@
-import path from 'path'
-
-export function getAbsolutePath(relativePath: string): string {
-  return path.join(__dirname, relativePath)
-}
-
-export const isMac = process.platform === 'darwin'
-
 export function timeStringToFloatMinutes(time: string): number {
   const hoursMinutesSeconds = time.split(/[.:]/)
   const hours = parseInt(hoursMinutesSeconds[0], 10)
@@ -25,15 +17,19 @@ export function floatMinutesTommss(minutes: number): string {
   return sign + (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec
 }
 
-export class LocalStorage {
-  csvPath: string
-  constructor() {}
-}
-
-export function sortAlphabetically(a, b) {
+export function sortAlphabetically(a: any, b: any) {
   return a === b ? 0 : a < b ? -1 : 1
 }
 
-export function sortCounterAlphabetically(a, b) {
+export function sortCounterAlphabetically(a: any, b: any) {
   return a === b ? 0 : a > b ? -1 : 1
 }
+
+export const promisify =
+  (func: Function) =>
+  (...args: any[]) =>
+    new Promise((resolve, reject) =>
+      func(...args, (err: Error, result: any) =>
+        err ? reject(err) : resolve(result)
+      )
+    );

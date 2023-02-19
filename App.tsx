@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -23,6 +23,9 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Element from './src/test';
 import { CSVParser } from './src/csv-parser';
+import FileSelect from './src/components/FileSelect';
+import { WorkoutT } from './src/util/interfaces';
+import WorkoutView from './src/components/WorkoutView';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -43,10 +46,11 @@ function Section({children, title}: SectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const theme = useTheme()
-  const csvParser = new CSVParser({csvFilePath: ''}, console.log)
+  const [workouts, setWorkouts] = useState<WorkoutT[]>([])
   return (
     <SafeAreaView>
       <StatusBar/>
+      <FileSelect setWorkouts={setWorkouts}/>
       <ScrollView
         contentContainerStyle={{
           backgroundColor: theme.colors.background
@@ -55,9 +59,9 @@ function App(): JSX.Element {
         >
         <Header />
         <View>
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((el) => (
-            <View key={el} style={styles.sectionContainer}>
-              <Element></Element>
+          {workouts.map((wkout, i) => (
+            <View key={i}>
+              <WorkoutView workout={wkout} />
             </View>
           ))}
         </View>
