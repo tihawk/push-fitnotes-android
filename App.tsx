@@ -22,6 +22,7 @@ import {
   Header,
 } from 'react-native/Libraries/NewAppScreen';
 import Element from './src/test';
+import { CSVParser } from './src/csv-parser';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -42,6 +43,7 @@ function Section({children, title}: SectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const theme = useTheme()
+  const csvParser = new CSVParser({csvFilePath: ''}, console.log)
   return (
     <SafeAreaView>
       <StatusBar/>
