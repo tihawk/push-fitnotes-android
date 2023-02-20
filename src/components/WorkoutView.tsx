@@ -45,8 +45,8 @@ function WorkoutView({workout}: WorkoutViewI) {
               />
               <Text style={{marginTop: 10}}>Sets</Text>
               {exercise.sets.map((set, j) => (
-                <View>
-                  <View style={{flexDirection: 'row'}} key={`${i}-${j}`}>
+                <View key={`${i}-${j}`}>
+                  <View style={{flexDirection: 'row'}}>
                     <TextInput
                       label="Weight"
                       value={set.weight.toString()}
@@ -58,15 +58,15 @@ function WorkoutView({workout}: WorkoutViewI) {
                       style={{flex: 1}}
                     />
                   </View>
-                  <View style={{flexDirection: 'row'}} key={i}>
+                  <View style={{flexDirection: 'row'}}>
                     <TextInput
                       label="Time"
-                      value={set.time}
+                      value={set.time ? set.time.toString() : ''}
                       style={{flex: 1}}
                     />
                     <TextInput
                       label="Rest Time"
-                      value={set.restTime}
+                      value={set.restTime ? set.restTime.toString() : ''}
                       style={{flex: 1}}
                     />
                   </View>

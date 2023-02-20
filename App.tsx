@@ -21,53 +21,53 @@ import {
 import {
   Header,
 } from 'react-native/Libraries/NewAppScreen';
-import Element from './src/test';
-import { CSVParser } from './src/csv-parser';
 import FileSelect from './src/components/FileSelect';
 import { WorkoutT } from './src/util/interfaces';
 import WorkoutView from './src/components/WorkoutView';
-import { setSetting } from './src/settings';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SettingsView from './src/components/SettingsView';
+import CustomNavigationBar from './src/components/CustomNavigationBar';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const Stack = createNativeStackNavigator();
 
-function Section({children, title}: SectionProps): JSX.Element {
+function HomeView() {
+  const [workouts, setWorkouts] = useState<WorkoutT[]>([])
   return (
-    <View style={styles.sectionContainer}>
-      <Text>
-        {title}
-      </Text>
-      <Text>
-        {children}
-      </Text>
-    </View>
-  );
+    <SafeAreaView>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+      >
+        <Header />
+        <View>
+          {workouts.length ? workouts.map((wkout, i) => (
+            <View key={`workout-${i}`}>
+              <WorkoutView workout={wkout} />
+            </View>
+          )) : <FileSelect setWorkouts={setWorkouts}/>}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  )
 }
 
 function App(): JSX.Element {
   const theme = useTheme()
-  const [workouts, setWorkouts] = useState<WorkoutT[]>([])
   return (
-    <SafeAreaView>
-      <StatusBar/>
-      <FileSelect setWorkouts={setWorkouts}/>
-      <ScrollView
-        contentContainerStyle={{
-          backgroundColor: theme.colors.background
+    <NavigationContainer
+      // @ts-ignore
+      theme={theme}
+    >
+      <Stack.Navigator
+      initialRouteName='Home'
+        screenOptions={{
+          header: props => <CustomNavigationBar {...props} />,
         }}
-        contentInsetAdjustmentBehavior="automatic"
-        >
-        <Header />
-        <View>
-          {workouts.map((wkout, i) => (
-            <View key={i}>
-              <WorkoutView workout={wkout} />
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      >
+        <Stack.Screen name="Home" component={HomeView} />
+        <Stack.Screen name="Settings" component={SettingsView} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
