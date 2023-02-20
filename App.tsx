@@ -26,6 +26,7 @@ import { CSVParser } from './src/csv-parser';
 import FileSelect from './src/components/FileSelect';
 import { WorkoutT } from './src/util/interfaces';
 import WorkoutView from './src/components/WorkoutView';
+import { setSetting } from './src/settings';
 
 type SectionProps = PropsWithChildren<{
   title: string;

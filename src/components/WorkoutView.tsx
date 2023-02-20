@@ -1,5 +1,6 @@
 import { View } from "react-native"
 import { Button, Card, Checkbox, Divider, List, Text, TextInput, useTheme } from "react-native-paper"
+import { Converter } from "../converter"
 import { WorkoutT } from "../util/interfaces"
 
 interface WorkoutViewI {
@@ -7,6 +8,12 @@ interface WorkoutViewI {
 }
 function WorkoutView({workout}: WorkoutViewI) {
   const theme = useTheme()
+
+  const convertWorkout = async (workout: WorkoutT) => {
+    const converter = new Converter({csvFilePath: ''}, console.log)
+    const activities = Converter.convertToFitActivities([workout])
+    await converter.writeActivitiesToFitFiles(activities)
+  }
   return (
     <View style={{paddingBottom: 10}} >
       <Card>
@@ -16,6 +23,7 @@ function WorkoutView({workout}: WorkoutViewI) {
           <Button
             mode="contained-tonal"
             style={{marginLeft: 'auto'}}
+            onPress={() => convertWorkout(workout)}
           >Convert</Button>
           <Button
             mode="contained-tonal"
